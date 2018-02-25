@@ -2,10 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(test_baxter_mover_utils)
 
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
   baxter_mover_utils
-  cafer_core
   cv_bridge
   moveit_ros_planning_interface
   roscpp
@@ -15,6 +12,17 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -fPIC")
+
+add_message_files(
+        FILES
+        object_position.msg
+)
+
+generate_messages(
+        DEPENDENCIES
+        std_msgs
+        geometry_msgs
+)
 
 catkin_package(
 )

@@ -1,0 +1,23 @@
+<launch>
+    <arg name="camera_link_pose" default="0.227452 -0.0841643 0.87455 0.69823 -0.678333 0.149447 -0.185532"/>
+    <arg name="no_sim" default="false"/>
+
+
+    <group if="$(arg no_sim)">
+        <node name="static_transform" pkg="tf" type="static_transform_publisher" args=" $(arg camera_link_pose) /base /kinect2_link 100"/>
+    </group>
+
+    <rosparam command="load" file="$(find test_baxter_mover_utils)/launch/params/planner_params.yml" ns="planner_parameters" />
+    <node name="test_baxter_mover_utils_node" pkg="test_baxter_mover_utils" type="baxter_moveit_utils" output="screen" launch-prefix="terminator -x ">
+        <!-- <param name="group_name" type="string" value="$(arg group_name)"/> -->
+
+        <!-- remap for BAXTER robot joint states babbling -->
+        <remap from="/joint_states" to="/robot/joint_states"/>
+        
+        <!-- remap for crustcrawler robot joint states babbling -->
+        <!-- <remap from="/dream_babbling/controller_node/joint_states" to="/crustcrawler/joint_states"/> -->
+        
+        <!-- remap for PR2 robot joint states babbling -->
+        <!-- <remap from="/dream_babbling/controller_node/joint_states" to="/joint_states"/> -->
+    </node>
+</launch>
